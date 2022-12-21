@@ -52,7 +52,6 @@ class AuthController extends Controller
     //register new user
     public function register(Request $request)
     {
-
         try {
             //validate the form request
             $validator = Validator::make($request->all(), [
@@ -85,13 +84,13 @@ class AuthController extends Controller
                 return response()->json([
                     'message' => 'User account created succesfully',
                     'user' => $user,
-                    'token' => $user->createToken('Api Token', ['own:property'])->plainTextToken,
+                    'token' => $user->createToken('Api Token', ['owner'])->plainTextToken,
                 ], 200);
             } else {
                 return response()->json([
                     'message' => 'User account created succesfully',
                     'user' => $user,
-                    'token' => $user->createToken('Api Token')->plainTextToken,
+                    'token' => $user->createToken('Api Token', ['user'])->plainTextToken,
                 ], 200);
             }
         } catch (\Throwable $th) {
@@ -129,13 +128,19 @@ class AuthController extends Controller
 
         $user  = User::with('properties', 'tenants', 'requests', 'posts')->where('email', $request->email)->first();
 
-        if ($user->type === 'owner') {
+        if ($user->type === 'admin') {
+            return response()->json([
+                'message' => 'User succesfully logged in',
+                'user' => $user,
+                'token' => $user->createToken($request->email, ['admin'])->plainTextToken,
+            ], 200);
+        } elseif(($user->type === 'owner')) {
             return response()->json([
                 'message' => 'User succesfully logged in',
                 'user' => $user,
                 'token' => $user->createToken($request->email, ['owner'])->plainTextToken,
             ], 200);
-        } else {
+        }else{
             return response()->json([
                 'message' => 'User succesfully logged in',
                 'user' => $user,

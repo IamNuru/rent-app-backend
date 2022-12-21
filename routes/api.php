@@ -72,30 +72,31 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::patch('/auth/update', [AuthController::class, 'update']);
     Route::patch('/auth/update-profile-photo', [AuthController::class, 'updateProfilePhoto']);
     Route::delete('/user/{id}', [AuthController::class, 'deleteUser']);
-    Route::middleware(['abilities:owner'])->group(function(){
+    Route::middleware(['abilities:owner','abilities:admin'])->group(function(){
         Route::post('/property', [PropertyController::class, 'create']);
         Route::put('/property/{id}', [PropertyController::class, 'update']);
         Route::delete('/property/{id}', [PropertyController::class, 'deleteProperty']);
         Route::delete('/properties/{ids}', [PropertyController::class, 'deleteProperties']);
-    });
+        
+        Route::post('/tenant', [TenantController::class, 'create']);
+        Route::put('/tenant/{id}', [TenantController::class, 'update']);
+        Route::delete('/tenant/{id}', [TenantController::class, 'deleteTenant']);
+        Route::get('/tenant/{id}', [TenantController::class, 'singleTenant']);
     
-    Route::post('/post', [PostController::class, 'create']);
-    Route::put('/post/{id}', [PostController::class, 'update']);
-    Route::delete('/post/{id}', [PostController::class, 'deletePost']);
-    Route::delete('/posts/{ids}', [PostController::class, 'deletePosts']);
+        Route::get('/my/tenants', [TenantController::class, 'myTenants']);
+        Route::get('/my/properties', [PropertyController::class, 'myProperties']);
+        Route::get('/my/posts', [PostController::class, 'myPosts']);
+        Route::get('/my/requests', [RequestController::class, 'myRequests']);
+    });
+    Route::middleware(['abilities:admin'])->group(function(){
+        Route::post('/post', [PostController::class, 'create']);
+        Route::put('/post/{id}', [PostController::class, 'update']);
+        Route::delete('/post/{id}', [PostController::class, 'deletePost']);
+        Route::delete('/posts/{ids}', [PostController::class, 'deletePosts']);
+    });
     
     Route::post('/request', [RequestController::class, 'create']);
     Route::put('/request/{id}', [RequestController::class, 'update']);
     Route::delete('/request/{id}', [RequestController::class, 'deleteRequest']);
     Route::delete('/requests/{ids}', [RequestController::class, 'deleteRequests']);
-    
-    Route::post('/tenant', [TenantController::class, 'create']);
-    Route::put('/tenant/{id}', [TenantController::class, 'update']);
-    Route::delete('/tenant/{id}', [TenantController::class, 'deleteTenant']);
-    Route::get('/tenant/{id}', [TenantController::class, 'singleTenant']);
-
-    Route::get('/my/tenants', [TenantController::class, 'myTenants']);
-    Route::get('/my/properties', [PropertyController::class, 'myProperties']);
-    Route::get('/my/posts', [PostController::class, 'myPosts']);
-    Route::get('/my/requests', [RequestController::class, 'myRequests']);
 });
