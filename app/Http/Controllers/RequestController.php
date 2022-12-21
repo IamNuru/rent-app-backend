@@ -120,6 +120,7 @@ class RequestController extends Controller
             'category' => 'required|string|max:20',
             'min_price' => 'required|integer|min:1',
             'max_price' => 'required|integer|min:1|gte:min_price',
+            'phone_number' => 'required',
         ]);
 
 
@@ -141,7 +142,7 @@ class RequestController extends Controller
                 'category' => $request->category,
                 'min_price' => $request->min_price,
                 'max_price' => $request->max_price,
-                'phone_number' => $request->phoneNumber,
+                'phone_number' => $request->phone_number,
             ]);
 
             return response()->json([
@@ -177,9 +178,15 @@ class RequestController extends Controller
         try {
             $request = $user->request->update([
                 'title' => $request->title,
-                'slug' => $request->slug,
+                'slug' => Str::slug($request->title),
                 'message' => $request->message,
                 'type' => $request->type,
+                'addresses' => json_encode($request->addresses),
+                'amenities' => json_encode($request->amenities),
+                'category' => $request->category,
+                'min_price' => $request->min_price,
+                'max_price' => $request->max_price,
+                'phone_number' => $request->phone_number,
             ]);
 
             return response()->json([
