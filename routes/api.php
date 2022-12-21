@@ -88,7 +88,7 @@ Route::middleware('auth:sanctum')->group(function (){
         Route::get('/my/posts', [PostController::class, 'myPosts']);
         Route::get('/my/requests', [RequestController::class, 'myRequests']);
     });
-    Route::middleware(['abilities:admin'])->group(function(){
+    Route::middleware(['ability:admin'])->group(function(){
         Route::post('/post', [PostController::class, 'create']);
         Route::put('/post/{id}', [PostController::class, 'update']);
         Route::delete('/post/{id}', [PostController::class, 'deletePost']);
