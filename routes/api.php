@@ -72,7 +72,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::patch('/auth/update', [AuthController::class, 'update']);
     Route::patch('/auth/update-profile-photo', [AuthController::class, 'updateProfilePhoto']);
     Route::delete('/user/{id}', [AuthController::class, 'deleteUser']);
-    Route::middleware(['abilities:owner','abilities:admin'])->group(function(){
+    Route::middleware(['ability:owner,admin'])->group(function(){
         Route::post('/property', [PropertyController::class, 'create']);
         Route::put('/property/{id}', [PropertyController::class, 'update']);
         Route::delete('/property/{id}', [PropertyController::class, 'deleteProperty']);
