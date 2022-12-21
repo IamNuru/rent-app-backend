@@ -22,7 +22,7 @@ class PropertyController extends Controller
     //fetch all properties
     public function p_properties()
     {
-        $properties = Property::where('status', 1)->with('user', 'imageslist')->latest()->paginate(2);
+        $properties = Property::where('status', 1)->with('user', 'imageslist')->latest()->paginate(12);
 
         return response()->json([
             'properties' => $properties
