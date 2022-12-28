@@ -95,12 +95,12 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::delete('/user/{id}', [AuthController::class, 'deleteUser']);
     Route::middleware(['ability:owner,admin'])->group(function(){
         Route::post('/property', [PropertyController::class, 'create']);
-        Route::put('/property/{id}', [PropertyController::class, 'update']);
+        Route::patch('/property/{id}', [PropertyController::class, 'update']);
         Route::delete('/property/{id}', [PropertyController::class, 'deleteProperty']);
         Route::delete('/properties/{ids}', [PropertyController::class, 'deleteProperties']);
         
         Route::post('/tenant', [TenantController::class, 'create']);
-        Route::put('/tenant/{id}', [TenantController::class, 'update']);
+        Route::patch('/tenant/{id}', [TenantController::class, 'update']);
         Route::delete('/tenant/{id}', [TenantController::class, 'deleteTenant']);
         Route::get('/tenant/{id}', [TenantController::class, 'singleTenant']);
     
