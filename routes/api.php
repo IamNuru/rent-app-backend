@@ -7,6 +7,7 @@ use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\TenantController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,6 +41,26 @@ Route::get('/login', [AuthController::class, 'loginPage'])->name('login');
 Route::get('/properties', [PropertyController::class, 'properties']);
 Route::get('/posts', [PostController::class, 'posts']);
 Route::get('/requests', [RequestController::class, 'requests']);
+Route::get('/search/{term}', function (Request $request, $term){
+    $posts = DB::table('posts')
+        ->where('title', 'like', '%'.$term.'%')
+        ->orWhere('description', 'like', '%'.$term.'%')
+        ->get();
+    $requests = DB::table('requests')
+        ->where('title', 'like', '%'.$term.'%')
+        ->orWhere('message', 'like', '%'.$term.'%')
+        ->get();
+    $properties = DB::table('properties')
+        ->where('title', 'like', '%'.$term.'%')
+        ->orWhere('description', 'like', '%'.$term.'%')
+        ->get();
+
+    return response()->json([
+        'posts' => $posts,
+        'requests' => $requests,
+        'properties' => $properties,
+    ]);
+});
 //get single resource
 Route::get('/property/{id}', [PropertyController::class, 'singleProperty']);
 Route::get('/request/{id}/{slug}', [RequestController::class, 'singleRequest']);
@@ -93,6 +114,7 @@ Route::middleware('auth:sanctum')->group(function (){
         Route::put('/post/{id}', [PostController::class, 'update']);
         Route::delete('/post/{id}', [PostController::class, 'deletePost']);
         Route::delete('/posts/{ids}', [PostController::class, 'deletePosts']);
+        Route::delete('/user/{id}', [AuthController::class, 'deleteUser']);
     });
     
     Route::post('/request', [RequestController::class, 'create']);

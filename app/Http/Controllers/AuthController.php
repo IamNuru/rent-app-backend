@@ -75,12 +75,12 @@ class AuthController extends Controller
                 'last_name' => $request->lastName,
                 'email' => $request->email,
                 'gender' => $request->gender,
-                'type' => $request->type === true ? 'owner' : 'user',
+                'type' => $request->type ? 'owner' : 'user',
                 'phone_number' => $request->phoneNumber,
                 'password' => Hash::make($request->password),
             ]);
 
-            if ($request->type === true) {
+            if ($request->type) {
                 return response()->json([
                     'message' => 'User account created succesfully',
                     'user' => $user,
@@ -132,19 +132,19 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'User succesfully logged in',
                 'user' => $user,
-                'token' => $user->createToken($request->email, ['admin'])->plainTextToken,
+                'token' => $user->createToken('Api Token', ['admin'])->plainTextToken,
             ], 200);
         } elseif(($user->type === 'owner')) {
             return response()->json([
                 'message' => 'User succesfully logged in',
                 'user' => $user,
-                'token' => $user->createToken($request->email, ['owner'])->plainTextToken,
+                'token' => $user->createToken('Api Token', ['owner'])->plainTextToken,
             ], 200);
         }else{
             return response()->json([
                 'message' => 'User succesfully logged in',
                 'user' => $user,
-                'token' => $user->createToken($request->email, ['user'])->plainTextToken,
+                'token' => $user->createToken('Api Token', ['user'])->plainTextToken,
             ], 200);
         }
     }
