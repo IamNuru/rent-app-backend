@@ -100,7 +100,9 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::post('/message', [ChatController::class, 'message']);
     Route::get('/messages/{sender_id}', [ChatController::class, 'messages']);
     Route::get('/notifications', [NotificationController::class, 'notifications']);
-    Route::PATCH('/notification/{id}', [NotificationController::class, 'markAsRead']);
+    Route::patch('/notifications/markall', [NotificationController::class, 'markAllAsRead']);
+    Route::patch('/notification/{id}', [NotificationController::class, 'markAsRead']);
+    Route::post('/notification/showInterest', [NotificationController::class, 'create']);
     Route::get('/user', [AuthController::class, 'user']);
     Route::get('/users', [AuthController::class, 'users']);
     Route::patch('/auth/update', [AuthController::class, 'update']);

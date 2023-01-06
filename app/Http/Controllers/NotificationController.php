@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 class NotificationController extends Controller
 {
     //create a new notification
-    public function create(Request $request, $id)
+    public function create(Request $request)
     {
         try {
             $notification = Notification::create([
-                'receiver_id' => $id,
+                'receiver_id' => $request->receiver_id,
                 'type' => $request->type,
                 'message' => $request->message,
             ]);
@@ -29,9 +29,9 @@ class NotificationController extends Controller
 
     public function markAsRead($notificationId){
         $user = auth()->user();
-        $notification = Notification::where('id', $notificationId)->first();
+        $notification = $user->unReadNotifications->where('id', $notificationId)->first();
         if($notification){
-            $user->notifications()->update([
+            $notification->update([
                 'read' => true
             ]);
         }
@@ -39,21 +39,16 @@ class NotificationController extends Controller
 
     public function markAllAsRead(){
         $user = auth()->user();
-        $notifications = $user->notifications->get();
-        if($notifications){
-            foreach ($notifications as $notification) {
-                $notification->update([
-                    'read' => true
-                ]);
-            }
-        }
+        $user->unReadNotifications()->update([
+            'read' => true
+        ]);
     }
 
     public function notifications(){
         $user = auth()->user();
-        $notifications = $user->notifications;
-        $UnReadNotifications = $notifications->where('read', false);
-        $ReadNotifications = $notifications->where('read', true);
+        $UnReadNotifications = $user->unReadNotifications;
+        $ReadNotifications = $user->ReadNotifications;
+        
         return response()->json([
             'totalUnRead' => $UnReadNotifications->count(),
             'unReadNotifications' => $UnReadNotifications,
