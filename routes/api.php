@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\TenantController;
+use App\Http\Controllers\SupportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +43,15 @@ Route::get('/login', [AuthController::class, 'loginPage'])->name('login');
 Route::get('/properties', [PropertyController::class, 'properties']);
 Route::get('/posts', [PostController::class, 'posts']);
 Route::get('/requests', [RequestController::class, 'requests']);
+Route::post('/contact-us', [SupportController::class, 'create']);
+Route::get('/statistics', function (){
+    $countUsers = DB::table('users')->count();
+    $countProperties = DB::table('properties')->count();
+    return response()->json([
+        'countUsers' => $countUsers, 
+        'countProperties' => $countProperties, 
+    ]);
+});
 Route::get('/search/{term}', function (Request $request, $term){
     $posts = DB::table('posts')
         ->where('title', 'like', '%'.$term.'%')
@@ -88,6 +99,8 @@ Route::get('/p_requests', [RequestController::class, 'p_requests']);
 Route::middleware('auth:sanctum')->group(function (){
     Route::post('/message', [ChatController::class, 'message']);
     Route::get('/messages/{sender_id}', [ChatController::class, 'messages']);
+    Route::get('/notifications', [NotificationController::class, 'notifications']);
+    Route::PATCH('/notification/{id}', [NotificationController::class, 'markAsRead']);
     Route::get('/user', [AuthController::class, 'user']);
     Route::get('/users', [AuthController::class, 'users']);
     Route::patch('/auth/update', [AuthController::class, 'update']);

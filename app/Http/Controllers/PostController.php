@@ -153,6 +153,7 @@ class PostController extends Controller
     //update post
     public function update(Request $request, $id)
     {
+        $user = auth()->user();
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|min:10|max:75',
             'description' => 'required|string|min:10|max:200',
