@@ -21,7 +21,7 @@ class PostController extends Controller
     //fetch all blog paginated posts
     public function p_posts()
     {
-        $posts = Post::with('user')->paginate(2);
+        $posts = Post::with('user')->paginate(10);
 
         return response()->json([
             'posts' => $posts
@@ -166,13 +166,13 @@ class PostController extends Controller
             return response()->json([
                 'message' => 'Invalid inputs',
                 'errors' => $validator->errors()
-            ], 401);
+            ], 402);
         }
 
         try {
-            $post = $user->post->update([
+            $post = $user->posts()->where('id', $id)->update([
                 'title' => $request->title,
-                'slug' => $request->slug,
+                'slug' => Str::slug($request->title),
                 'description' => $request->description,
                 'content' => $request->content,
                 'cover' => $request->cover,

@@ -159,7 +159,7 @@ class RequestController extends Controller
 
 
     //create a new request
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|min:10|max:75',
@@ -176,7 +176,7 @@ class RequestController extends Controller
         }
 
         try {
-            $request = $user->request->update([
+            $request = $user->requests()->where('id', $id)->update([
                 'title' => $request->title,
                 'slug' => Str::slug($request->title),
                 'message' => $request->message,

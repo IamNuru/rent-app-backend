@@ -126,7 +126,7 @@ Route::middleware('auth:sanctum')->group(function (){
     });
     Route::middleware(['ability:admin'])->group(function(){
         Route::post('/post', [PostController::class, 'create']);
-        Route::put('/post/{id}', [PostController::class, 'update']);
+        Route::patch('/post/{id}', [PostController::class, 'update']);
         Route::delete('/post/{id}', [PostController::class, 'deletePost']);
         Route::delete('/posts/{ids}', [PostController::class, 'deletePosts']);
         Route::delete('/user/{id}', [AuthController::class, 'deleteUser']);
