@@ -172,7 +172,7 @@ class RequestController extends Controller
             return response()->json([
                 'message' => 'Invalid inputs',
                 'errors' => $validator->errors()
-            ], 401);
+            ], 402);
         }
 
         try {

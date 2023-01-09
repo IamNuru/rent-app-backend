@@ -67,7 +67,7 @@ class AuthController extends Controller
                 return response()->json([
                     'message' => 'Invalid inputs',
                     'errors' => $validator->errors()
-                ], 401);
+                ], 402);
             }
 
             $user = User::create([
@@ -117,7 +117,7 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Invalid inputs',
                 'errors' => $validator->errors()
-            ], 401);
+            ], 402);
         }
 
         if (!Auth::attempt($request->only(['email', 'password']))) {
@@ -165,7 +165,7 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Invalid inputs',
                 'errors' => $validator->errors()
-            ], 401);
+            ], 402);
         }
 
         $u = $user->update([
@@ -198,7 +198,7 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Invalid inputs',
                 'errors' => $validator->errors()
-            ], 401);
+            ], 402);
         }
 
         $u = $user->update([
