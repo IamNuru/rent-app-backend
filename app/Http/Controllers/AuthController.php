@@ -43,7 +43,7 @@ class AuthController extends Controller
     {
         $user = User::where('id', $id)->firstOrFail();
         if ($user) {
-            $user->with('requests', 'posts', 'tenants', 'properties')->delete();
+            $user->with('requests', 'posts', 'tenants', 'properties', 'notifications')->delete();
             return response()->json(['message' => 'User Deleted successfully']);
         }
     }
