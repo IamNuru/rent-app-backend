@@ -11,7 +11,7 @@ class TenantController extends Controller
     //fetch all tenants
     public function tenants()
     {
-        $tenants = Tenant::where('status', 1)->with('user')->get();
+        $tenants = Tenant::with('user')->get();
 
         return response()->json([
             'tenants' => $tenants

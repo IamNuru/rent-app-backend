@@ -52,6 +52,16 @@ Route::get('/statistics', function (){
         'countProperties' => $countProperties, 
     ]);
 });
+Route::get('/app/items', function(){
+    $posts = DB::table('posts')->get();
+    $requests = DB::table('requests')->get();
+    $properties = DB::table('properties')->get();
+    return response()->json([
+        'posts' => $posts,
+        'requests' => $requests,
+        'properties' => $properties,
+    ]);
+});
 Route::get('/search/{term}', function (Request $request, $term){
     $posts = DB::table('posts')
         ->where('title', 'like', '%'.$term.'%')
@@ -115,6 +125,7 @@ Route::middleware('auth:sanctum')->group(function (){
         Route::delete('/properties/{ids}', [PropertyController::class, 'deleteProperties']);
         
         Route::post('/tenant', [TenantController::class, 'create']);
+        Route::get('/tenants', [TenantController::class, 'tenants']);
         Route::patch('/tenant/{id}', [TenantController::class, 'update']);
         Route::delete('/tenant/{id}', [TenantController::class, 'deleteTenant']);
         Route::get('/tenant/{id}', [TenantController::class, 'singleTenant']);
