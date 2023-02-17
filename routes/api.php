@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AmenityController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
@@ -43,6 +45,8 @@ Route::get('/login', [AuthController::class, 'loginPage'])->name('login');
 Route::get('/properties', [PropertyController::class, 'properties']);
 Route::get('/posts', [PostController::class, 'posts']);
 Route::get('/requests', [RequestController::class, 'requests']);
+Route::get('/categories', [CategoryController::class, 'categories']);
+Route::get('/amenities', [AmenityController::class, 'amenities']);
 Route::post('/contact-us', [SupportController::class, 'create']);
 Route::get('/statistics', function (){
     $countUsers = DB::table('users')->count();
@@ -140,7 +144,19 @@ Route::middleware('auth:sanctum')->group(function (){
         Route::patch('/post/{id}', [PostController::class, 'update']);
         Route::delete('/post/{id}', [PostController::class, 'deletePost']);
         Route::delete('/posts/{ids}', [PostController::class, 'deletePosts']);
+
         Route::delete('/user/{id}', [AuthController::class, 'deleteUser']);
+        
+        
+        Route::post('/add-category', [CategoryController::class, 'create']);
+        Route::patch('/update-category/{id}', [CategoryController::class, 'update']);
+        Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
+        Route::get('/category/{id}', [CategoryController::class, 'singleCategory']);
+   
+        Route::post('/amenity', [AmenityController::class, 'create']);
+        Route::patch('/amenity/{id}', [AmenityController::class, 'update']);
+        Route::delete('/amenity/{id}', [AmenityController::class, 'destroy']);
+        Route::get('/amenity/{id}', [AmenityController::class, 'singleCategory']);
     });
     
     Route::post('/request', [RequestController::class, 'create']);
